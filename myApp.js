@@ -1,12 +1,26 @@
 const express = require('express');
+const helmet = require('helmet');
 const app = express();
-
-
-
-
-
-
-
+app.use(helmet({
+   frameguard: {         
+    action: 'deny'
+  },
+  contentSecurityPolicy: {   
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ['style.com'],
+    }
+  },
+  dnsPrefetchControl: false
+}))
+const ninetyDaysinSeconds = 90*24*60*60;
+app.use(
+  helmet.hsts({
+    maxAge: ninetyDaysinSeconds,
+    force: true,
+  })
+);
+app.use(helmet.noCache());
 
 
 
